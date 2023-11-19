@@ -13,6 +13,20 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    public function friendships()
+    {
+        return $this->hasMany(User::class,"user_id");
+    }
+
+    public function sentFriendRequests()
+    {
+        return $this->hasMany(FriendRequest::class,"sender_id");
+    }
+
+    public function receivedFriendRequests()
+    {
+        return $this->hasMany(FriendRequest::class,"receiver_id");
+    }
     /**
      * The attributes that are mass assignable.
      *
