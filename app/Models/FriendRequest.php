@@ -9,7 +9,10 @@ class FriendRequest extends Model
 {
     use HasFactory;
 
-    protected $fillable = ["sender_id","receiver_id","status"];
+    protected $fillable = [
+        "sender_id",
+        "receiver_id",
+        "status"];
 
     public function sender()
     {

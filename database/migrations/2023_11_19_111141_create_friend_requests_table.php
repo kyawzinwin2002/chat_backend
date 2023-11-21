@@ -16,6 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("sender_id")->constrained("users");
             $table->foreignId("receiver_id")->constrained("users");
+            $table->unique(["sender_id","receiver_id"]);
+            $table->unique(["receiver_id","sender_id"]);
             $table->string("status")->default(Status::Pending);
             $table->timestamps();
         });

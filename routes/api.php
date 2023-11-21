@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\FriendRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,14 +21,23 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+
 Route::prefix("v1")->group(function () {
 
-    //Auth
+    //Guest
     Route::post("register", [RegisterController::class, "register"]);
     Route::post("login", [LoginController::class, "login"]);
 
+    //User
     Route::middleware("auth:sanctum")->group(function(){
-        
+
+        Route::controller(FriendRequestController::class)
+            ->group(function(){
+                Route::post("request","store");
+                Route::put("request/{request_id}/update","update");
+                Route::delete("request/{request_id}/delete","destroy");
+            });
     });
 });
 
