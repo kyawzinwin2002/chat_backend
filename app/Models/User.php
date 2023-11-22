@@ -4,24 +4,43 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Enums\Status;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    public function friendships()
+    public function friends()
     {
-        return $this->hasMany(User::class,"user_id");
+        return $this->belongsToMany(User::class,"friends","user_id","friend_id")->withPivot("status");
     }
 
-    public function receivedFriendRequests()
+    public function add(User $receiver)
     {
-        return $this->hasMany(FriendRequest::class,"receiver_id");
+        $this->friends()->attach($receiver->id,["status" => Status::Pending]);
+        $receiver->friends()->attach($this->id,["status" => Status::Deciding]);
     }
+
+    public function accept(User $sender)
+    {
+        $this->friends()->sync([$sender->id => ["status" => Status::Friend]],false);
+        $sender->friends()->sync([$this->id => ["status" => Status::Friend]],false);
+    }
+
+    public function listOfFriends()
+    {
+        $friends = $this->load(["friends" => function($q){
+            $q->wherePivot("status",Status::Friend)->get();
+        }])->friends;
+
+        return $friends;
+    }
+
     /**
      * The attributes that are mass assignable.
      *

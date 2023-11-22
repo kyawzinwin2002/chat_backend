@@ -7,7 +7,7 @@ trait ApiResponse
     public function successResponse($data = [])
     {
         return $this->sendResponse([
-            "status" => true,
+            "status" => "success",
             "data" => $data
         ],200);
     }
@@ -15,7 +15,7 @@ trait ApiResponse
     public function failResponse($errorMessage,$code,$errors = [])
     {
         return $this->sendResponse([
-            "status" => false,
+            "status" => "error",
             "message" => $errorMessage,
             "errors" => $errors,
         ],$code);

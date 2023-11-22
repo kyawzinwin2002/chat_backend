@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Status;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -11,12 +12,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('friendships', function (Blueprint $table) {
+        Schema::create('friends', function (Blueprint $table) {
             $table->id();
             $table->foreignId("user_id")->constrained("users");
             $table->foreignId("friend_id")->constrained("users");
-            $table->unique(["user_id","friend_id"]);
-            $table->unique(["friend_id","user_id"]);
+            $table->string("status")->default(Status::Pending);
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('friendships');
+        Schema::dropIfExists('friends');
     }
 };
