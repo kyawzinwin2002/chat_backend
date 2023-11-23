@@ -2,10 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Status;
 use App\Models\User;
 use App\Traits\ApiResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
@@ -43,5 +41,15 @@ class ContactController extends Controller
     public function friendList()
     {
         return Auth::user()->listOfFriends();
+    }
+
+    public function strangers()
+    {
+        $friends = Auth::user()->listOfFriends();
+        $friendIds = $friends->pluck("id")->toArray();
+
+        return User::whereNotIn("id",$friendIds)
+            ->where("id","<>",Auth::id())
+            ->get();
     }
 }

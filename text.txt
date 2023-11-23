@@ -21,6 +21,12 @@ Conversation
 _id
 _timestamps
 
+
+Conversation_User
+_id
+_conversation_id
+_user_id
+
 Message
 _id
 _user_id
@@ -28,10 +34,6 @@ _conversation_id
 _messageable_type
 _messageable_id
 
-Conversation_User
-_id
-_conversation_id
-_user_id
 
 Text_Message
 _id
