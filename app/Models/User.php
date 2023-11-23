@@ -41,6 +41,16 @@ class User extends Authenticatable
         return $friends;
     }
 
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class,"conversation_user","user_id","conversation_user_id");
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class,"user_id");
+    }
+
     /**
      * The attributes that are mass assignable.
      *
