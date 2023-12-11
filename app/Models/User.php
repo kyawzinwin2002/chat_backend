@@ -17,38 +17,45 @@ class User extends Authenticatable
 
     public function friends()
     {
-        return $this->belongsToMany(User::class,"friends","user_id","friend_id")->withPivot("status");
+        return $this->belongsToMany(User::class, "friends", "user_id", "friend_id")->withPivot("status");
     }
 
     public function add(User $receiver)
     {
-        $this->friends()->attach($receiver->id,["status" => Status::Pending]);
-        $receiver->friends()->attach($this->id,["status" => Status::Deciding]);
+        $this->friends()->attach($receiver->id, ["status" => Status::Pending]);
+        $receiver->friends()->attach($this->id, ["status" => Status::Deciding]);
     }
 
     public function accept(User $sender)
     {
-        $this->friends()->sync([$sender->id => ["status" => Status::Friend]],false);
-        $sender->friends()->sync([$this->id => ["status" => Status::Friend]],false);
+        $this->friends()->sync([$sender->id => ["status" => Status::Friend]], false);
+        $sender->friends()->sync([$this->id => ["status" => Status::Friend]], false);
     }
 
     public function listOfFriends()
     {
-        $friends = $this->load(["friends" => function($q){
-            $q->wherePivot("status",Status::Friend)->get();
+        $friends = $this->load(["friends" => function ($q) {
+            $q->wherePivot("status", Status::Friend)->get();
         }])->friends;
 
         return $friends;
     }
 
+    public function strangers()
+    {
+        return User::whereNotIn("id", $this->listOfFriends()->pluck("id")->toArray())
+            ->where("id","<>",$this->id)
+            ->get();
+    }
+
     public function conversations()
     {
-        return $this->belongsToMany(Conversation::class,"conversation_user","user_id","conversation_user_id");
+        return $this->belongsToMany(Conversation::class, "conversation_user", "user_id", "conversation_user_id");
     }
 
     public function messages()
     {
-        return $this->hasMany(Message::class,"user_id");
+        return $this->hasMany(Message::class, "user_id");
     }
 
     /**

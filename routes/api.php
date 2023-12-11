@@ -35,7 +35,6 @@ Route::prefix("v1")->group(function () {
             Route::get("/friend/{friend_id}/add","add");
             Route::get("/friend/{friend_id}/accept","accept");
             Route::get("/friend/list","friendList");
-            Route::get("/strangers/index","strangers");
        });
 
     });
