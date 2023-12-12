@@ -1,54 +1,45 @@
-User
-_id
-_name
-_email
-_email_verified_at
-_password
+Send Code Service
 
-Friendship
-_id
-_user_id
-_friend_id
-unique
+1. Code Creation;
+2. Send Email,
 
-FriendRequest
-_id
-_sender_id
-_receiver_id
-_status
+class CreateCode
+{
+    public static function create($receiver)
+    {
+        $code = 111111;
+        Code::create([
+            "code" => code;
+            "receiver" => receiver;
+            "code_type" => type;
+        ])
 
-Conversation
-_id
-_timestamps
+        return $code;
+    }
+}
 
+class SendCodeService
+{
+    public static function send($receiver,$email)
+    {
+        Mail::to($receiver->email)->send($email);
+    }
+}
 
-Conversation_User
-_id
-_conversation_id
-_user_id
+class RegisterController
+{
+    public function register()
+    {
+        //Other Codes;
 
-Message
-_id
-_user_id
-_conversation_id
-_messageable_type
-_messageable_id
+        //Send Code to User;
+        $code = CreateCode::create($receiver);
 
+        $email = new VerificationEmail($receiver,$code);
 
-Text_Message
-_id
-_content
-_user_id
-
-Image_Message
-_id
-_url
-_user_id
-
-Video_Message
-_id
-_url
-_user_id
+        SendCodeService::send($receiver,$email);
+    }
+}
 
 
 

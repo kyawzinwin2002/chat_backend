@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\CodeType;
 use App\Http\Controllers\Controller;
+use App\Mail\RegisterVerification;
+use App\Mail\RegisterVerificationEmail;
 use App\Models\User;
+use App\Services\CreateCodeService;
 use App\Services\SendCodeService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
@@ -34,8 +38,11 @@ class RegisterController extends Controller
         ]);
 
         //Send code to user
-        $codeService = new SendCodeService();
-        $codeService->send($user);
+        $code = CreateCodeService::create($user->id,CodeType::RegisterVerify);
+
+        $email = new RegisterVerificationEmail($user,$code);
+
+        SendCodeService::send($user,$email);
 
         Auth::login($user);
 
