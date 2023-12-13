@@ -2,12 +2,7 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Mail;
-
-class SendCodeService
+interface SendCodeService
 {
-    public static function send($receiver, $email)
-    {
-        Mail::to($receiver->email)->send($email);
-    }
+    public static function send($receiver,$codeType);
 }

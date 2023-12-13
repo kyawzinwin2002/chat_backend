@@ -5,20 +5,20 @@ Send Code Service
 
 class CreateCode
 {
-    public static function create($receiver)
+    public static function create($receiver,$type)
     {
         $code = 111111;
         Code::create([
             "code" => code;
             "receiver" => receiver;
-            "code_type" => type;
+            "code_type" => $type;
         ])
 
         return $code;
     }
 }
 
-class SendCodeService
+class SendEmailService
 {
     public static function send($receiver,$email)
     {
@@ -26,20 +26,51 @@ class SendCodeService
     }
 }
 
-class RegisterController
+
+interface SendCodeService
 {
-    public function register()
+    public static function send($receiver,$codeType);
+}
+
+trait SendVerificationCode
+{
+    public static function send($receiver,$codeType)
     {
-        //Other Codes;
+        $code = CreateCode::create($receiver,$codeType);
 
-        //Send Code to User;
-        $code = CreateCode::create($receiver);
+        $email = static::getEmailInstance($receiver,$code);
 
-        $email = new VerificationEmail($receiver,$code);
+        SendEmailService::send($receiver,$email);
+    }
 
-        SendCodeService::send($receiver,$email);
+    abstract protected static function getEmailInstance($receiver, $code);
+
+}
+
+class SendRegisterCode implements SendCodeService
+{
+    use SendVerificationCode;
+
+    protected static function getEmailInstance($receiver, $code)
+    {
+        return new RegisterVerificationEmail($receiver, $code);
     }
 }
+
+class SendEmailVerifyCode implements SendCodeService
+{
+    use SendVerificationCode;
+
+    protected static function getEmailInstance($receiver, $code)
+    {
+        return new EmailVerifyEmail($receiver, $code);
+    }
+}
+
+SendRegisterCode::send($receiver,CodeType::Register);
+SendEmailVerifyCode::send($receiver,CodeType::EmailVerify)
+
+
 
 
 

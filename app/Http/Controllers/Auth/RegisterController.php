@@ -9,6 +9,8 @@ use App\Mail\RegisterVerificationEmail;
 use App\Models\User;
 use App\Services\CreateCodeService;
 use App\Services\SendCodeService;
+use App\Services\SendEmailService;
+use App\Services\SendRegisterCodeService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -38,12 +40,9 @@ class RegisterController extends Controller
         ]);
 
         //Send code to user
-        $code = CreateCodeService::create($user->id,CodeType::RegisterVerify);
+        SendRegisterCodeService::send($user, CodeType::RegisterVerify);
 
-        $email = new RegisterVerificationEmail($user,$code);
-
-        SendCodeService::send($user,$email);
-
+        //Login and Response
         Auth::login($user);
 
         return $this->successResponse([
