@@ -44,13 +44,13 @@ class User extends Authenticatable
     public function strangers()
     {
         return User::whereNotIn("id", $this->listOfFriends()->pluck("id")->toArray())
-            ->where("id","<>",$this->id)
+            ->where("id", "<>", $this->id)
             ->get();
     }
 
     public function conversations()
     {
-        return $this->belongsToMany(Conversation::class, "conversation_user", "user_id", "conversation_user_id");
+        return $this->belongsToMany(Conversation::class, "conversation_user", "user_id", "conversation_id");
     }
 
     public function messages()

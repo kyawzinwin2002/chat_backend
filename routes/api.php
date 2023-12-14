@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FriendRequestController;
 use Illuminate\Http\Request;
@@ -37,6 +38,9 @@ Route::prefix("v1")->group(function () {
             Route::get("/friend/list","friendList");
        });
 
+       Route::controller(ChatController::class)->group(function(){
+            Route::post("/message/send","send");
+       });
     });
 });
 
