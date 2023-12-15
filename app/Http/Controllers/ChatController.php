@@ -6,6 +6,7 @@ use App\Models\Conversation;
 use App\Models\Message;
 use App\Models\PhotoMessage;
 use App\Models\TextMessage;
+use App\Services\SendMessageService;
 use App\Traits\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,17 @@ class ChatController extends Controller
             Auth::user()->conversations()->attach($conversation);
         }
 
+        //Store Message in the Database and public directory and Send;
+        SendMessageService::send($this->store($request));
+
+        //Response Sent Message
+        return $this->successResponse([
+            "message" => "Send Message Successfully"
+        ]);
+    }
+
+    protected function store($request)
+    {
         if ($request->hasFile("message")) {
             $file = $request->file("message");
             $fileType = $file->getMimeType();
@@ -52,8 +64,6 @@ class ChatController extends Controller
         $message->messageable()->associate($polyMessage);
         $message->save();
 
-        return $this->successResponse([
-            "message" => "Send Message Successfully"
-        ]);
+        return $message;
     }
 }
