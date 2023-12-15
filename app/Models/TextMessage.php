@@ -13,7 +13,6 @@ class TextMessage extends Model
 
     public function message()
     {
-        return $this->morphOne(Message::class,"messageable");
+        return $this->morphOne(Message::class, "messageable");
     }
-
 }

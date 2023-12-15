@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Mail;
-
 class SendEmailService
 {
     public static function send($receiver, $email)

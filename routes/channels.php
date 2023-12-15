@@ -17,6 +17,6 @@ Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
     return (int) $user->id === (int) $id;
 });
 
-Broadcast::channel('message.{conversation_id}', function($user, $conversation_id){
+Broadcast::channel('message.{conversation_id}', function ($user, $conversation_id) {
     return in_array($conversation_id, $user->conversations->pluck("id")->toArray());
 });

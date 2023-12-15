@@ -32,7 +32,7 @@ class SendMessage implements ShouldBroadcast
     public function broadcastOn(): array
     {
         return [
-            new PrivateChannel('message.'.$this->message->conversation_id),
+            new PrivateChannel('message.' . $this->message->conversation_id),
         ];
     }
 

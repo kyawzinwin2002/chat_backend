@@ -30,17 +30,16 @@ Route::prefix("v1")->group(function () {
     Route::post("login", [LoginController::class, "login"]);
 
     //User
-    Route::middleware("auth:sanctum")->group(function(){
+    Route::middleware("auth:sanctum")->group(function () {
 
-       Route::controller(ContactController::class)->group(function (){
-            Route::get("/friend/{friend_id}/add","add");
-            Route::get("/friend/{friend_id}/accept","accept");
-            Route::get("/friend/list","friendList");
-       });
+        Route::controller(ContactController::class)->group(function () {
+            Route::get("/friend/{friend_id}/add", "add");
+            Route::get("/friend/{friend_id}/accept", "accept");
+            Route::get("/friend/list", "friendList");
+        });
 
-       Route::controller(ChatController::class)->group(function(){
-            Route::post("/message/send","send");
-       });
+        Route::controller(ChatController::class)->group(function () {
+            Route::post("/message/send", "send");
+        });
     });
 });
-
