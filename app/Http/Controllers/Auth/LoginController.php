@@ -9,8 +9,6 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
-    use ApiResponse;
-
     public function login(Request $request)
     {
         if (Auth::attempt($request->only(["email", "password"]))) {

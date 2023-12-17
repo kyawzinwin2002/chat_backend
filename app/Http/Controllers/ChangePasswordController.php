@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ChangePasswordController extends Controller
 {
-    use ApiResponse;
-
     public function change(Request $request)
     {
         $validators = Validator::make($request->all(),[

@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ContactController extends Controller
 {
-    use ApiResponse;
-
     public function add($friend_id)
     {
         $friend = User::find($friend_id);

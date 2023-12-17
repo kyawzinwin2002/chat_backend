@@ -1,33 +1,6 @@
-Send Message Feature;
+Remain to do
 
-Models//
-
-Message => messageable(){ return $this->morphTo() };
-
-TextMessage => message(){ return $this->morphOne(Message::class) }
-PhotoMessage => message(){ return $this->morphOne(Message::class) }
-VideoMessage => message(){ return $this->morphOne(Message::class) }
-
-Conversation
-
-Functions
-
-Store Message In Database with conversation_id and user_id
-    1.Divide Message Type( Text, Photo, Message )
-Create Conversation if doesn't exist
-Message List based on conversation_id
-
-Events
-
-SendMessageEvent
-
-
-
-
-
-
-
-
-
-
+For Frontend
+Test Built-in Email Verification Feature
+Test Built-in Reset Password Feature
 

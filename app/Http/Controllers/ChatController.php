@@ -13,8 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 class ChatController extends Controller
 {
-    use ApiResponse;
-
     public function send(Request $request)
     {
         $conversation = Conversation::find($request->conversation_id);

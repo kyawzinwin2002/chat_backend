@@ -13,7 +13,8 @@ class CreateCodeService
         Code::create([
             "code" => $verify_code,
             "user_id" => $receiver_id,
-            "type" => $type
+            "type" => $type,
+            "expires_at" => now()->addMinute(3)
         ]);
 
         return $verify_code;

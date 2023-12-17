@@ -11,8 +11,6 @@ use Illuminate\Support\Facades\Validator;
 
 class ResetPasswordController extends Controller
 {
-    use ApiResponse;
-
     public function check(Request $request)
     {
         $validators = Validator::make($request->all(),[

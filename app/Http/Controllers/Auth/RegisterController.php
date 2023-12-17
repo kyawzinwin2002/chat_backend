@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Services\SendRegisterCodeService;
 use App\Traits\ApiResponse;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,8 +15,6 @@ use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends Controller
 {
-    use ApiResponse;
-
     public function register(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -35,7 +34,8 @@ class RegisterController extends Controller
         ]);
 
         //Send code to user
-        SendRegisterCodeService::send($user, CodeType::RegisterVerify);
+        // SendRegisterCodeService::send($user, CodeType::RegisterVerify);
+        event(new Registered($user));
 
         //Login and Response
         Auth::login($user);
