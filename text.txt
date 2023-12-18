@@ -4,3 +4,9 @@ For Frontend
 Test Built-in Email Verification Feature
 Test Built-in Reset Password Feature
 
+Remain Features;
+
+Conversations Controller or add function in Model(user);
+Online or Offline with Presence Channel;
+
+
