@@ -36,8 +36,18 @@ class ContactController extends Controller
         return $this->failResponse("User Not Found", 404);
     }
 
+    public function unfriend($id)
+    {
+        $user = User::find($id);
+        Auth::user()->unfriend($user);
+    }
+
     public function friendList()
     {
         return Auth::user()->listOfFriends();
+    }
+
+    public function strangers(){
+        return Auth::user()->strangers();
     }
 }

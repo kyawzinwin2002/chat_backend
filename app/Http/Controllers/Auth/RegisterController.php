@@ -2,11 +2,8 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Enums\CodeType;
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Services\SendRegisterCodeService;
-use App\Traits\ApiResponse;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

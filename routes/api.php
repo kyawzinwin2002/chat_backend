@@ -7,9 +7,13 @@ use App\Http\Controllers\Auth\ResetPasswordController;
 use App\Http\Controllers\ChangePasswordController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\RequestController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\Routing\RequestContext;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,21 +43,38 @@ Route::prefix("v1")->group(function () {
     //User
     Route::middleware("auth:sanctum")->group(function () {
 
+        Route::get("/user", function (Request $request) {
+            return $request->user();
+        });
+
+        Route::get("logout",[LogoutController::class,"logout"]);
+
         Route::post('change-password',[ChangePasswordController::class,"change"]);
 
         Route::controller(ContactController::class)->group(function () {
             Route::get("friend/{friend_id}/add", "add");
             Route::get("friend/{friend_id}/accept", "accept");
+            Route::get("friend/{id}/unfriend","unfriend");
             Route::get("friend/list", "friendList");
+            Route::get("strangers/list","strangers");
+        });
+
+        Route::controller(RequestController::class)->group(function(){
+            Route::get("requests","requests");
+            Route::delete("request/{id}/delete","delete");
         });
 
         Route::controller(ChatController::class)->group(function () {
             Route::post("message/send", "send");
         });
 
-    });
+        Route::controller(ConversationController::class)->group(function() {
+            Route::get("conversations/index","get");
+            Route::get("conversation/{id}/show","show");
+            Route::delete("conversation/{id}/delete","delete");
+        });
 
-    Route::middleware(["auth:sanctum","signed"])->group(function(){
-        Route::get("email/verify/{id}/{hash}",[EmailVerifyController::class,"verify"])->name("verification.verify");
+        Route::middleware("signed")->get("email/verify/{id}/{hash}",[EmailVerifyController::class,"verify"])->name("verification.verify");
+
     });
 });

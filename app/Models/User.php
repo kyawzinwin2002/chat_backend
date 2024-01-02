@@ -30,6 +30,12 @@ class User extends Authenticatable implements MustVerifyEmail
         $sender->friends()->sync([$this->id => ["status" => Status::Friend]], false);
     }
 
+    public function unfriend(User $friend)
+    {
+        $this->friends()->detach($friend->id);
+        $friend->friends()->detach($this->id);
+    }
+
     public function listOfFriends()
     {
         $friends = $this->load(["friends" => function ($q) {
@@ -37,6 +43,15 @@ class User extends Authenticatable implements MustVerifyEmail
         }])->friends;
 
         return $friends;
+    }
+
+    public function friendRequests()
+    {
+        $requests = $this->load(["friends" => function ($q) {
+            $q->wherePivot("status", Status::Deciding)->get();
+        }])->friends;
+
+        return $requests;
     }
 
     public function strangers()
