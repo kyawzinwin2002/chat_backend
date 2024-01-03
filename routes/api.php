@@ -61,6 +61,7 @@ Route::prefix("v1")->group(function () {
 
         Route::controller(RequestController::class)->group(function(){
             Route::get("requests","requests");
+            Route::get("requests/sent","sentRequests");
             Route::delete("request/{id}/delete","delete");
         });
 

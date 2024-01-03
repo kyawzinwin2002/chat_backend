@@ -10,7 +10,12 @@ class RequestController extends Controller
 {
     public function requests()
     {
-        return Auth::user()->friendRequests();
+        return Auth::user()->receivedRequests();
+    }
+
+    public function sentRequests()
+    {
+        return Auth::user()->sentRequests();
     }
 
     public function delete($id)

@@ -45,10 +45,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return $friends;
     }
 
-    public function friendRequests()
+    public function receivedRequests()
     {
         $requests = $this->load(["friends" => function ($q) {
             $q->wherePivot("status", Status::Deciding)->get();
+        }])->friends;
+
+        return $requests;
+    }
+
+    public function sentRequests()
+    {
+        $requests = $this->load(["friends" => function ($q) {
+            $q->wherePivot("status", Status::Pending)->get();
         }])->friends;
 
         return $requests;
