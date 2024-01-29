@@ -11,10 +11,11 @@ class ConversationController extends Controller
 {
     public function get()
     {
-        $user = User::find(Auth::id());
+        // $user = User::find(Auth::id());
+        $conversations = Conversation::with(["users"])->get();
 
         return $this->successResponse([
-            "conversations" => $user->conversations
+            "conversations" => $conversations
         ]);
     }
 
@@ -46,7 +47,7 @@ class ConversationController extends Controller
         $conversation->delete();
 
         return $this->successResponse([
-            "message" => "Deleted conversation successfullly"
+            "message" => "Deleted conversation successfully"
         ]);
     }
 }

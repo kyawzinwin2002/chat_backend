@@ -28,6 +28,9 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         $this->friends()->sync([$sender->id => ["status" => Status::Friend]], false);
         $sender->friends()->sync([$this->id => ["status" => Status::Friend]], false);
+        $conversation = Conversation::create();
+        $this->conversations()->attach($conversation);
+        $sender->conversations()->attach($conversation);
     }
 
     public function unfriend(User $friend)

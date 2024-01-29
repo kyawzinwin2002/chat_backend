@@ -9,6 +9,7 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\LogoutController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\RequestController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
@@ -73,6 +74,10 @@ Route::prefix("v1")->group(function () {
             Route::get("conversations/index","get");
             Route::get("conversation/{id}/show","show");
             Route::delete("conversation/{id}/delete","delete");
+        });
+
+        Route::controller(MessageController::class)->group(function(){
+            Route::get("conversation/{conversation_id}/messages","get");
         });
 
         Route::middleware("signed")->get("email/verify/{id}/{hash}",[EmailVerifyController::class,"verify"])->name("verification.verify");

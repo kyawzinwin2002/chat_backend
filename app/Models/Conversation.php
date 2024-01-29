@@ -11,11 +11,16 @@ class Conversation extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class,"conversation_user");
     }
 
     public function messages()
     {
-        return $this->hasMany(Message::class, "conversation_id");
+        return $this->hasMany(Message::class);
+    }
+
+    public function latestMessage()
+    {
+
     }
 }

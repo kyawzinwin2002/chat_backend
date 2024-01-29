@@ -22,12 +22,9 @@ class ChatController extends Controller
             Auth::user()->conversations()->attach($conversation);
         }
 
-        //Store Message in the Database and public directory and Send;
-        SendMessageService::send($this->store($request));
-
         //Response Sent Message
         return $this->successResponse([
-            "message" => "Send Message Successfully"
+            "message" => SendMessageService::send($this->store($request))
         ]);
     }
 
