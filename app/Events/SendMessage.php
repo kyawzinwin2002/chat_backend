@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\TextMessage;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -21,7 +22,16 @@ class SendMessage implements ShouldBroadcast
      */
     public function __construct($message)
     {
-        $this->message = $message;
+        $newMessage = [
+            "message" => $message->messageable,
+            "sender" => $message->user,
+            "type" => $message->messageable_type == TextMessage::class ? "text" : "photo",
+            "conversation_id" => $message->conversation_id
+        ];
+
+        $this->message = (object) $newMessage;
+
+        // $this->message = $message;
     }
 
     /**

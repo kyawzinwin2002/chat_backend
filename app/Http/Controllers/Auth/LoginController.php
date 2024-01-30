@@ -18,6 +18,6 @@ class LoginController extends Controller
             ]);
         }
 
-        return $this->failResponse("Crendentials are wrong!", 401);
+        return $this->failResponse("Credentials are wrong!", 401);
     }
 }
