@@ -29,7 +29,7 @@ class MessageController extends Controller
         }
 
         return $this->successResponse([
-            "messages" => $messages
+            "messages" => array_reverse($messages)
         ]);
     }
 }
