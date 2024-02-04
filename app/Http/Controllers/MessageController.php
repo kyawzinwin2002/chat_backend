@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Conversation;
+use App\Models\PhotoMessage;
 use App\Models\TextMessage;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -21,6 +22,11 @@ class MessageController extends Controller
         $messages = [];
 
         foreach($conversation->messages as $message){
+            if($message->messageable_type == PhotoMessage::class){
+                $message->messageable = [
+                    "url" => asset("storage/".$message->messageable->url)
+                ];
+            }
             $messages[] = [
                 "message" => $message->messageable,
                 "sender" => $message->user,

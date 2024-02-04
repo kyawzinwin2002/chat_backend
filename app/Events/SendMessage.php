@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Models\PhotoMessage;
 use App\Models\TextMessage;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -22,6 +23,11 @@ class SendMessage implements ShouldBroadcast
      */
     public function __construct($message)
     {
+        if($message->messageable_type == PhotoMessage::class){
+            $message->messageable = [
+                "url" => asset("storage/".$message->messageable->url)
+            ];
+        }
         $newMessage = [
             "message" => $message->messageable,
             "sender" => $message->user,
